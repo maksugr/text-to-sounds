@@ -52,7 +52,7 @@ In order to use this crate, you have to add it under `[dependencies]` to your `C
 
 ```toml
 [dependencies]
-text-to-sounds = "0.1.1"
+text-to-sounds = "0.1.2"
 ```
 
 ## Examples
