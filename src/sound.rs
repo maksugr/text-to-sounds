@@ -24,11 +24,6 @@ impl Sound {
         Self { kind, text }
     }
 
-    /// Returns kind of the sound
-    pub fn kind(&self) -> &SoundKind {
-        &self.kind
-    }
-
     /// Returns text of the sound
     pub fn text(&self) -> &String {
         &self.text
