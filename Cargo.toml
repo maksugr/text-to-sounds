@@ -1,6 +1,6 @@
 [package]
 name = "text-to-sounds"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["maksugr <maksugr@gmail.com>"]
 description = "Zero dependencies text-to-sounds parsing tool."
@@ -9,7 +9,7 @@ documentation = "https://docs.rs/text-to-sounds/"
 homepage = "https://github.com/maksugr/text-to-sounds"
 repository = "https://github.com/maksugr/text-to-sounds"
 readme = "README.md"
-keywords = ["parsing", "serialization", "text-to-sounds", "sounds", "english grammar", "english sounds"]
+keywords = ["parsing", "serialization", "text-to-sounds", "sounds", "english", "grammar"]
 categories = ["Parser implementations"]
 
 [dependencies]
