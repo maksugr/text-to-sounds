@@ -1,6 +1,6 @@
 //! # text-to-sounds
 //!
-//! Zero dependencies text-to-sounds parsing tool.
+//! Text-to-sounds parsing tool.
 //!
 //! ## Overview
 //!
@@ -35,7 +35,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! text-to-sounds = "0.2.1"
+//! text-to-sounds = "0.2.2"
 //! ```
 //!
 //! ## Examples

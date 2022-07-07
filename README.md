@@ -20,7 +20,7 @@
 [deps-svg]: https://deps.rs/repo/github/maksugr/text-to-sounds/status.svg
 [deps-url]: https://deps.rs/repo/github/maksugr/text-to-sounds
 
-Zero dependencies text-to-sounds parsing tool.
+Text-to-sounds parsing tool.
 
 ## Overview
 
@@ -55,7 +55,7 @@ In order to use this crate, you have to add it under `[dependencies]` to your `C
 
 ```toml
 [dependencies]
-text-to-sounds = "0.2.1"
+text-to-sounds = "0.2.2"
 ```
 
 ## Examples
