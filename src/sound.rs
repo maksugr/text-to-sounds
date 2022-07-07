@@ -1,3 +1,5 @@
+use uuid::Uuid;
+
 /// English sound kinds
 #[derive(Debug, PartialEq)]
 pub enum SoundKind {
@@ -12,16 +14,28 @@ pub enum SoundKind {
 }
 
 /// Struct of the sound
-#[derive(Debug, PartialEq)]
+#[derive(Debug)]
 pub struct Sound {
+    #[allow(dead_code)]
+    id: Uuid,
     kind: SoundKind,
     text: String,
+}
+
+impl PartialEq for Sound {
+    fn eq(&self, other: &Self) -> bool {
+        self.kind == other.kind && self.text == other.text
+    }
 }
 
 impl Sound {
     /// Creates new Sound
     pub fn new(kind: SoundKind, text: String) -> Self {
-        Self { kind, text }
+        Self {
+            id: Uuid::new_v4(),
+            kind,
+            text,
+        }
     }
 
     /// Returns text of the sound

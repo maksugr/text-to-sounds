@@ -1,6 +1,6 @@
 [package]
 name = "text-to-sounds"
-version = "0.1.4"
+version = "0.2.0"
 edition = "2021"
 authors = ["maksugr <maksugr@gmail.com>"]
 description = "Zero dependencies text-to-sounds parsing tool."
@@ -13,3 +13,9 @@ keywords = ["parsing", "serialization", "sounds", "english", "grammar"]
 categories = ["parser-implementations"]
 
 [dependencies]
+
+[dependencies.uuid]
+version = "1.1.2"
+features = [
+    "v4"
+]

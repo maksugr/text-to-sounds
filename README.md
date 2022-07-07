@@ -41,6 +41,7 @@ enum SoundKind {
 
 // Struct of the sound
 pub struct Sound {
+    id: Uuid,
     kind: SoundKind,
     text: String,
 }
@@ -52,7 +53,7 @@ In order to use this crate, you have to add it under `[dependencies]` to your `C
 
 ```toml
 [dependencies]
-text-to-sounds = "0.1.4"
+text-to-sounds = "0.2.0"
 ```
 
 ## Examples

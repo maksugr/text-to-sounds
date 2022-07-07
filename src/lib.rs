@@ -21,6 +21,7 @@
 //!
 //! // Struct of the sound
 //! pub struct Sound {
+//!     id: Uuid,
 //!     kind: SoundKind,
 //!     text: String,
 //! }
@@ -32,7 +33,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! text-to-sounds = "0.1.4"
+//! text-to-sounds = "0.2.0"
 //! ```
 //!
 //! ## Examples
