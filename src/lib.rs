@@ -7,6 +7,8 @@
 //! The library has methods (`parse`, `serialize`) to parse text (`AsRef<str>`) to `Vec<Sound>` and serialize `Vec<Sound>` to `String`. `Sound` struct has information about English sound.
 //!
 //! ```rust
+//! use uuid::Uuid;
+//!
 //! // English sound kinds
 //! enum SoundKind {
 //!     Ptk,
@@ -33,7 +35,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! text-to-sounds = "0.2.0"
+//! text-to-sounds = "0.2.1"
 //! ```
 //!
 //! ## Examples

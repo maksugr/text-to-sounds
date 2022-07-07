@@ -27,6 +27,8 @@ Zero dependencies text-to-sounds parsing tool.
 The library has methods (`parse`, `serialize`) to parse text (`AsRef<str>`) to `Vec<Sound>` and serialize `Vec<Sound>` to `String`. `Sound` struct has information about English sound.
 
 ```rust
+use uuid::Uuid;
+
 // English sound kinds
 enum SoundKind {
     Ptk,
@@ -53,7 +55,7 @@ In order to use this crate, you have to add it under `[dependencies]` to your `C
 
 ```toml
 [dependencies]
-text-to-sounds = "0.2.0"
+text-to-sounds = "0.2.1"
 ```
 
 ## Examples
