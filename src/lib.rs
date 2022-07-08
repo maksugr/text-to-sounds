@@ -35,7 +35,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! text-to-sounds = "0.3.0"
+//! text-to-sounds = "0.3.1"
 //! ```
 //!
 //! ## Examples
@@ -79,6 +79,7 @@ mod parser;
 mod scanner;
 mod serializer;
 mod sound;
+mod utils;
 mod wasm;
 
 pub use crate::parser::parse;

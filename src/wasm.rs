@@ -1,5 +1,6 @@
 use crate::parse;
 use crate::serialize;
+use crate::utils;
 use crate::Sound;
 use wasm_bindgen::prelude::*;
 
@@ -33,6 +34,12 @@ extern "C" {
 }
 
 /// Parse text to sounds (wasm)
+///
+/// Currently it's not possible to define exact returned type
+/// And it defined as `any`
+/// https://github.com/rustwasm/wasm-bindgen/issues/1591
+/// But the exact type is Array<Sound> (see signature of the `serialize_wasm` function)
+/// Also consider example below to get more information
 ///
 /// ## Example
 ///
@@ -150,8 +157,7 @@ extern "C" {
 /// ```
 #[wasm_bindgen]
 pub fn parse_wasm(text: &str) -> JsValue {
-    // It's not possible at the moment to return SoundArray
-    // https://github.com/rustwasm/wasm-bindgen/issues/1591
+    utils::set_panic_hook();
     JsValue::from_serde(&parse(text)).unwrap()
 }
 
@@ -270,5 +276,6 @@ pub fn parse_wasm(text: &str) -> JsValue {
 /// ```
 #[wasm_bindgen]
 pub fn serialize_wasm(sounds: &SoundArray) -> String {
+    utils::set_panic_hook();
     serialize(sounds.into_serde::<Vec<Sound>>().unwrap())
 }
