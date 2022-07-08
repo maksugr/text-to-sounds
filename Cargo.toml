@@ -1,6 +1,6 @@
 [package]
 name = "text-to-sounds"
-version = "0.2.2"
+version = "0.3.0"
 edition = "2021"
 authors = ["maksugr <maksugr@gmail.com>"]
 description = "Text-to-sounds parsing tool."
@@ -9,13 +9,21 @@ documentation = "https://docs.rs/text-to-sounds/"
 homepage = "https://github.com/maksugr/text-to-sounds"
 repository = "https://github.com/maksugr/text-to-sounds"
 readme = "README.md"
-keywords = ["parsing", "serialization", "sounds", "english", "grammar"]
-categories = ["parser-implementations"]
+keywords = ["parsing", "wasm", "webassembly", "english", "grammar"]
+categories = ["parser-implementations", "wasm"]
+
+[lib]
+crate-type = ["cdylib", "rlib"]
 
 [dependencies]
+serde = { version = "1.0", features = ["derive"] }
+wasm-bindgen = { version = "0.2.63", features = ["serde-serialize"] }
+js-sys = "0.3.58"
 
 [dependencies.uuid]
 version = "1.1.2"
 features = [
-    "v4"
+    "v4",
+    "serde",
+    "js"
 ]

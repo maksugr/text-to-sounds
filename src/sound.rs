@@ -1,7 +1,8 @@
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 /// English sound kinds
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub enum SoundKind {
     Ptk,
     Th,
@@ -14,7 +15,7 @@ pub enum SoundKind {
 }
 
 /// Struct of the sound
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Sound {
     #[allow(dead_code)]
     id: Uuid,
