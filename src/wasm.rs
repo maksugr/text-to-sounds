@@ -1,12 +1,11 @@
 use crate::parse;
 use crate::serialize;
-use crate::utils;
 use crate::Sound;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen(typescript_custom_section)]
 const SOUND_KIND_ENUM: &'static str = r#"
-declare enum SoundKindEnum {
+export declare enum SoundKindEnum {
     PTK = 'Ptk',
     TH = 'Th',
     W = 'W',
@@ -20,7 +19,7 @@ declare enum SoundKindEnum {
 
 #[wasm_bindgen(typescript_custom_section)]
 const SOUND_ARRAY: &'static str = r#"
-declare interface ISound {
+export declare interface ISound {
     readonly id: string;
     readonly kind: SoundKindEnum;
     readonly text: string;
@@ -157,7 +156,6 @@ extern "C" {
 /// ```
 #[wasm_bindgen]
 pub fn parse_wasm(text: &str) -> JsValue {
-    utils::set_panic_hook();
     JsValue::from_serde(&parse(text)).unwrap()
 }
 
@@ -276,6 +274,5 @@ pub fn parse_wasm(text: &str) -> JsValue {
 /// ```
 #[wasm_bindgen]
 pub fn serialize_wasm(sounds: &SoundArray) -> String {
-    utils::set_panic_hook();
     serialize(sounds.into_serde::<Vec<Sound>>().unwrap())
 }

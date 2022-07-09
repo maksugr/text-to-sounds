@@ -79,7 +79,6 @@ mod parser;
 mod scanner;
 mod serializer;
 mod sound;
-mod utils;
 mod wasm;
 
 pub use crate::parser::parse;
