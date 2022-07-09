@@ -1,0 +1,32 @@
+{
+  "name": "text-to-sounds",
+  "collaborators": [
+    "maksugr <maksugr@gmail.com>"
+  ],
+  "description": "Text-to-sounds parsing tool.",
+  "version": "0.3.1",
+  "license": "MIT OR Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maksugr/text-to-sounds"
+  },
+  "files": [
+    "text_to_sounds_bg.wasm",
+    "text_to_sounds.js",
+    "text_to_sounds_bg.js",
+    "text_to_sounds.d.ts",
+    "LICENSE-APACHE",
+    "LICENSE-MIT"
+  ],
+  "module": "text_to_sounds.js",
+  "homepage": "https://github.com/maksugr/text-to-sounds",
+  "types": "text_to_sounds.d.ts",
+  "sideEffects": false,
+  "keywords": [
+    "parsing",
+    "wasm",
+    "webassembly",
+    "english",
+    "grammar"
+  ]
+}

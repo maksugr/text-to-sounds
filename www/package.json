@@ -1,0 +1,35 @@
+{
+    "name": "spoken-sounds-highlighter",
+    "description": "Spoken Sounds Highlighter",
+    "version": "1.0.0",
+    "author": {
+      "name": "Roman Ponomarev",
+      "email": "maksugr@gmail.com"
+    },
+    "license": "(MIT OR Apache-2.0)",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/maksugr/text-to-sounds.git"
+    },
+    "bugs": {
+        "url": "https://github.com/maksugr/text-to-sounds/issues"
+    },
+    "homepage": "https://github.com/maksugr/text-to-sounds#readme",
+    "engines": {
+        "node": ">=16",
+        "npm": ">=8"
+    },
+    "scripts": {
+        "build": "webpack --config webpack.config.js",
+        "dev": "webpack-dev-server"
+    },
+    "dependencies": {
+        "text-to-sounds": "^0.3.1"
+    },
+    "devDependencies": {
+        "copy-webpack-plugin": "^5.0.0",
+        "webpack": "^4.29.3",
+        "webpack-cli": "^3.1.0",
+        "webpack-dev-server": "^3.1.5"
+    }
+}
