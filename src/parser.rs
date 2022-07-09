@@ -50,7 +50,7 @@ fn any_letter(letters: Vec<char>, scanner: &Scanner) -> bool {
 /// assert_eq!(parse("The text just in case"), sounds);
 /// ```
 pub fn parse<T: AsRef<str>>(text: T) -> Vec<Sound> {
-    let text = text.as_ref().trim_start().trim_end();
+    let text = text.as_ref();
 
     let mut sounds = vec![];
 
@@ -61,8 +61,6 @@ pub fn parse<T: AsRef<str>>(text: T) -> Vec<Sound> {
     let text_splited = text.split(' ').collect::<Vec<&str>>();
 
     for (index, word) in text_splited.iter().enumerate() {
-        let word = word.trim_start().trim_end();
-
         let mut scanner = Scanner::new(word);
 
         while !scanner.is_done() {
@@ -164,7 +162,9 @@ mod parse {
 
     #[test]
     fn it_should_parse_space() {
-        assert_eq!(parse(" "), Vec::<Sound>::new());
+        let sounds = vec![Sound::new(SoundKind::Undefined, String::from(" "))];
+
+        assert_eq!(parse(" "), sounds);
     }
 
     #[test]

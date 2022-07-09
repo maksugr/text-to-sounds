@@ -3,9 +3,19 @@
     <head>
         <meta charset="utf-8">
         <title>Spoken Sounds Highlighter</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="./styles.css"></link>
     </head>
     <body>
         <noscript>This page contains webassembly and javascript content, please enable javascript in your browser.</noscript>
+        <h1>Spoken Sounds Highlighter</h1>
+        <main id="contenteditable" contenteditable="true"></main>
+        <div id="max-length-text" class="hidden">Sorry, max text length exceeded 🤷</div>
+        <footer>
+            This project intends to be education only. It highlights English sounds in the provided text. Just it. Under the hood a couple of the not stable enough technologies like <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/contenteditable" rel="noopener noreferrer">contenteditable</a> or <a href="https://developer.mozilla.org/en-US/docs/WebAssembly" rel="noopener noreferrer">wasm</a>. Hence, if you have some troubles, sorry about that, try to use the last Google Chrome. However, there are many known issues: 1. cursor carriage always moves to the end of the line. 2. there are no new lines. 3. there is a max text length limitation — 5000 characters. You may be interested in a <a href="https://github.com/maksugr/text-to-sounds" rel="noopener noreferrer">github repo</a> with the source code of the rust crate and this website.
+        </footer>
         <script src="./bootstrap.js"></script>
     </body>
 </html>

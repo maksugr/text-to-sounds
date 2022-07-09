@@ -1,14 +1,16 @@
-const CopyWebpackPlugin = require("copy-webpack-plugin");
+/* eslint-disable no-undef */
+
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 
 module.exports = {
-    entry: "./bootstrap.js",
+    entry: './bootstrap.js',
     output: {
-        path: path.resolve(__dirname, "public"),
-        filename: "bootstrap.js",
+        path: path.resolve(__dirname, 'public'),
+        filename: 'bootstrap.js',
     },
-    mode: "development",
+    mode: 'development',
     plugins: [
-        new CopyWebpackPlugin(['index.html'])
+        new CopyWebpackPlugin(['index.html', 'styles.css'])
     ],
 };
