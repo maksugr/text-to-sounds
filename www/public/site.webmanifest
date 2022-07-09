@@ -1,0 +1,19 @@
+{
+    "name": "Spoken Sounds Highlighter",
+    "short_name": "Sounds",
+    "icons": [
+        {
+            "src": "/favicon/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/favicon/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#c69dd2",
+    "background_color": "#c69dd2",
+    "display": "standalone"
+}

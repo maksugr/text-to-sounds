@@ -1,6 +1,6 @@
 {
     "name": "spoken-sounds-highlighter",
-    "description": "Spoken Sounds Highlighter",
+    "description": "Highlights English sounds in the provided text",
     "version": "1.0.0",
     "author": {
         "name": "Roman Ponomarev",
