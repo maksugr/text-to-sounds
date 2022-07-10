@@ -20,7 +20,9 @@
 [deps-svg]: https://deps.rs/repo/github/maksugr/text-to-sounds/status.svg
 [deps-url]: https://deps.rs/repo/github/maksugr/text-to-sounds
 
-Text-to-sounds parsing tool.
+Text-to-sounds parsing tool. Used in [Spoken Sounds Highlighter](https://spokensoundshighlighter.com/).
+
+![Website screenshot](/www/assets/website.png)
 
 ## Overview
 
