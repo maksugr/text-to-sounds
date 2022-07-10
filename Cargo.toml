@@ -1,6 +1,6 @@
 [package]
 name = "text-to-sounds"
-version = "1.0.1"
+version = "1.0.2"
 edition = "2021"
 authors = ["maksugr <maksugr@gmail.com>"]
 description = "Text-to-sounds parsing tool."

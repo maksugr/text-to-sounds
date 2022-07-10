@@ -20,7 +20,9 @@
 [deps-svg]: https://deps.rs/repo/github/maksugr/text-to-sounds/status.svg
 [deps-url]: https://deps.rs/repo/github/maksugr/text-to-sounds
 
-Text-to-sounds parsing tool.
+Text-to-sounds parsing tool. Used in [Spoken Sounds Highlighter](https://spokensoundshighlighter.com/).
+
+![Website screenshot](/www/assets/website.png)
 
 ## Overview
 
@@ -57,7 +59,7 @@ In order to use this crate, you have to add it under `[dependencies]` to your `C
 
 ```toml
 [dependencies]
-text-to-sounds = "1.0.0"
+text-to-sounds = "1.0.2"
 ```
 
 ## Javascript / WASM

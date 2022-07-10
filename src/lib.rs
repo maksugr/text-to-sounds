@@ -35,7 +35,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! text-to-sounds = "1.0.1"
+//! text-to-sounds = "1.0.2"
 //! ```
 //!
 //! ## Examples
