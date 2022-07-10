@@ -1,7 +1,8 @@
 use crate::scanner::Scanner;
 use crate::sound::{Sound, SoundKind};
+use crate::utils::any_letter;
 
-fn add_sound_from_two_letter(
+fn add_sound_from_two_letters(
     first_letter: &char,
     second_letter: &char,
     kind: SoundKind,
@@ -11,10 +12,6 @@ fn add_sound_from_two_letter(
         kind,
         first_letter.to_string() + &String::from(*second_letter),
     ));
-}
-
-fn any_letter(letters: Vec<char>, scanner: &Scanner) -> bool {
-    letters.iter().any(|letter| scanner.peek_next() == letter)
 }
 
 /// Parse text to sounds
@@ -68,10 +65,9 @@ pub fn parse<T: AsRef<str>>(text: T) -> Vec<Sound> {
                 letter @ ('c' | 'C')
                     if !scanner.is_last() && any_letter(vec!['h', 'H'], &scanner) =>
                 {
-                    let letter = letter;
                     let next_letter = scanner.peek_next();
 
-                    add_sound_from_two_letter(letter, next_letter, SoundKind::Ch, &mut sounds);
+                    add_sound_from_two_letters(letter, next_letter, SoundKind::Ch, &mut sounds);
 
                     scanner.pop();
                     scanner.pop();
@@ -79,15 +75,13 @@ pub fn parse<T: AsRef<str>>(text: T) -> Vec<Sound> {
                 letter @ ('p' | 'P' | 't' | 'T' | 'c' | 'C')
                     if scanner.is_first() || scanner.is_last() =>
                 {
-                    let letter = letter;
-
                     if (letter == &'t' || letter == &'T')
                         && !scanner.is_last()
                         && any_letter(vec!['h', 'H'], &scanner)
                     {
                         let next_letter = scanner.peek_next();
 
-                        add_sound_from_two_letter(letter, next_letter, SoundKind::Th, &mut sounds);
+                        add_sound_from_two_letters(letter, next_letter, SoundKind::Th, &mut sounds);
 
                         scanner.pop();
                         scanner.pop();
@@ -99,40 +93,32 @@ pub fn parse<T: AsRef<str>>(text: T) -> Vec<Sound> {
                     scanner.pop();
                 }
                 letter @ ('t' | 'T') if any_letter(vec!['h', 'H'], &scanner) => {
-                    let letter = letter;
                     let next_letter = scanner.peek_next();
 
-                    add_sound_from_two_letter(letter, next_letter, SoundKind::Th, &mut sounds);
+                    add_sound_from_two_letters(letter, next_letter, SoundKind::Th, &mut sounds);
 
                     scanner.pop();
                     scanner.pop();
                 }
                 letter @ ('w' | 'W') if scanner.is_first() => {
-                    let letter = letter;
-
                     sounds.push(Sound::new(SoundKind::W, letter.to_string()));
                     scanner.pop();
                 }
                 letter @ ('v' | 'V') if scanner.is_first() => {
-                    let letter = letter;
-
                     sounds.push(Sound::new(SoundKind::V, letter.to_string()));
                     scanner.pop();
                 }
                 letter @ ('n' | 'N')
                     if !scanner.is_last() && any_letter(vec!['g', 'G', 'k', 'K'], &scanner) =>
                 {
-                    let letter = letter;
                     let next_letter = scanner.peek_next();
 
-                    add_sound_from_two_letter(letter, next_letter, SoundKind::Ng, &mut sounds);
+                    add_sound_from_two_letters(letter, next_letter, SoundKind::Ng, &mut sounds);
 
                     scanner.pop();
                     scanner.pop();
                 }
                 letter @ ('j' | 'J') if scanner.is_first() => {
-                    let letter = letter;
-
                     sounds.push(Sound::new(SoundKind::Dj, letter.to_string()));
                     scanner.pop();
                 }

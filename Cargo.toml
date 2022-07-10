@@ -1,6 +1,6 @@
 [package]
 name = "text-to-sounds"
-version = "0.3.1"
+version = "1.0.0"
 edition = "2021"
 authors = ["maksugr <maksugr@gmail.com>"]
 description = "Text-to-sounds parsing tool."
@@ -16,17 +16,17 @@ categories = ["parser-implementations", "wasm"]
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-serde = { version = "1.0", features = ["derive"] }
-wasm-bindgen = { version = "0.2.63", features = ["serde-serialize"] }
-js-sys = "0.3.58"
+wasm-bindgen = { version = "0.2.63" }
 
 [dependencies.uuid]
 version = "1.1.2"
 features = [
     "v4",
-    "serde",
     "js"
 ]
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3.13"
 
 [profile.release]
 opt-level = "s"

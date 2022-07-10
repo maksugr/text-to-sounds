@@ -4,7 +4,7 @@
 //!
 //! ## Overview
 //!
-//! The library has methods (`parse`, `serialize`) to parse text (`AsRef<str>`) to `Vec<Sound>` and serialize `Vec<Sound>` to `String`. `Sound` struct has information about English sound.
+//! The library has functions (`parse`, `serialize`) to parse text (`AsRef<str>`) to `Vec<Sound>` and serialize `Vec<Sound>` to `String`. `Sound` struct has information about English sound. `highlight` function adds `html` tags to text that can be used to highlight sounds in the browser via `css`.
 //!
 //! ```rust
 //! use uuid::Uuid;
@@ -35,13 +35,13 @@
 //!
 //! ```toml
 //! [dependencies]
-//! text-to-sounds = "0.3.1"
+//! text-to-sounds = "1.0.0"
 //! ```
 //!
 //! ## Examples
 //!
 //! ```rust
-//! use text_to_sounds::{parse, serialize, SoundKind, Sound};
+//! use text_to_sounds::{parse, serialize, highlight, SoundKind, Sound};
 //!
 //! let sounds = vec![
 //!     Sound::new(SoundKind::Th, String::from("Th")),
@@ -71,17 +71,23 @@
 //!
 //! // serialize
 //! assert_eq!(serialize(sounds), "The text just in case");
+//!
+//! // highlight
+//! assert_eq!(highlight("The text just in case"), "<span class='Th'>Th</span>e <span class='Ptk'>t</span>ex<span class='Ptk'>t</span> <span class='Dj'>j</span>us<span class='Ptk'>t</span> in <span class='Ptk'>c</span>ase".to_string());
 //! ```
 //!
 //! Also, you can consider tests inside the files.
 
+mod highlighter;
 mod parser;
 mod scanner;
 mod serializer;
 mod sound;
+mod utils;
 mod wasm;
 
+pub use crate::highlighter::highlight;
 pub use crate::parser::parse;
 pub use crate::serializer::serialize;
 pub use crate::sound::{Sound, SoundKind};
-pub use crate::wasm::{parse_wasm, serialize_wasm};
+pub use crate::wasm::highlight_wasm;

@@ -1,6 +1,6 @@
-import { parse_wasm } from 'text-to-sounds';
+import { highlight_wasm } from 'text-to-sounds';
 
-const MAX_TEXT_LENGTH = 5000;
+const MAX_TEXT_LENGTH = 10000;
 
 const contenteditableEl = document.getElementById('contenteditable');
 const maxLengthTextEl = document.getElementById('max-length-text');
@@ -30,19 +30,7 @@ const contenteditableHighlight = () => {
 
     const isMaxTextLength = textContent.length >= MAX_TEXT_LENGTH;
 
-    const sounds = parse_wasm(textContent.slice(0, MAX_TEXT_LENGTH));
-
-    let soundsHtml = sounds.reduce((acc, sound) => {
-        if (sound.kind === 'Undefined') {
-            acc += sound.text;
-            return acc;
-        }
-
-        acc += `<span class="${sound.kind}">${sound.text}</span>`;
-        return acc;
-    }, '');
-
-    contenteditableEl.innerHTML = soundsHtml;
+    contenteditableEl.innerHTML = highlight_wasm(textContent.slice(0, MAX_TEXT_LENGTH));
     document.execCommand('selectAll', false, null);
     document.getSelection().collapseToEnd();
 

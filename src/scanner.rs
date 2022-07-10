@@ -37,6 +37,17 @@ impl Scanner {
             .unwrap_or(DEFAULT_LETTER)
     }
 
+    /// Returns the prev character without advancing the cursor.
+    pub fn peek_prev(&self) -> &char {
+        if self.is_first() {
+            return DEFAULT_LETTER;
+        }
+
+        self.characters
+            .get(self.cursor - 1)
+            .unwrap_or(DEFAULT_LETTER)
+    }
+
     /// Returns true if further progress is not possible.
     pub fn is_done(&self) -> bool {
         self.cursor == self.characters.len()
@@ -168,6 +179,27 @@ mod peek_next {
         scanner.pop();
 
         assert_eq!(scanner.peek_next(), &'c')
+    }
+}
+
+#[cfg(test)]
+mod peek_prev {
+    use super::*;
+
+    #[test]
+    fn empty() {
+        let scanner = Scanner::new("");
+
+        assert_eq!(scanner.peek_prev(), DEFAULT_LETTER)
+    }
+
+    #[test]
+    fn not_done() {
+        let mut scanner = Scanner::new("abc");
+
+        scanner.pop();
+
+        assert_eq!(scanner.peek_prev(), &'a')
     }
 }
 

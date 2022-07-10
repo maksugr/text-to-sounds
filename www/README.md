@@ -6,6 +6,6 @@ This project intends to be education only. It highlights English sounds in the p
 
 1. cursor carriage always moves to the end of the line.
 2. there are no new lines.
-3. there is a max text length limitation — 5000 characters.
+3. there is a max text length limitation — 10000 characters.
 
 This project was born in [text-to-sounds](https://crates.io/crates/text-to-sounds) crate and at the moment consists of the crate and `www` directory inside it with the source code of the website that uses compiled to wasm version of the crate and provides a user interface to it.
