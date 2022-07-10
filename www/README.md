@@ -1,6 +1,6 @@
 # [Spoken Sounds Highlighter](https://spokensoundshighlighter.com)
 
-![Website screenshot](/assets/website.png)
+![Website screenshot](https://github.com/maksugr/text-to-sounds/raw/master/www/assets/website.png)
 
 Highlights English sounds in the provided text.
 
