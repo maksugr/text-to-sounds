@@ -3,17 +3,28 @@ use crate::sound::SoundKind;
 use crate::utils::any_letter;
 
 const NON_BREAKABLE_HTML_CHAR: char = '\u{a0}';
+const PUNCTUATION_CHARS: [char; 7] = ['.', ',', ';', '!', '?', ':', '-'];
+
+fn is_punctuation(c: &char) -> bool {
+    PUNCTUATION_CHARS.iter().any(|cc| cc == c)
+}
 
 fn is_first(scanner: &Scanner) -> bool {
+    let prev_char = scanner.peek_prev();
+
     scanner.is_first()
-        || scanner.peek_prev() == &' '
-        || scanner.peek_prev() == &NON_BREAKABLE_HTML_CHAR
+        || prev_char == &' '
+        || prev_char == &NON_BREAKABLE_HTML_CHAR
+        || is_punctuation(prev_char)
 }
 
 fn is_last(scanner: &Scanner) -> bool {
+    let next_char = scanner.peek_next();
+
     scanner.is_last()
-        || scanner.peek_next() == &' '
-        || scanner.peek_next() == &NON_BREAKABLE_HTML_CHAR
+        || next_char == &' '
+        || next_char == &NON_BREAKABLE_HTML_CHAR
+        || is_punctuation(next_char)
 }
 
 fn highlight_two_letters(
@@ -168,7 +179,7 @@ mod highlight {
     fn it_should_highlight_w() {
         assert_eq!(
             highlight("What, where, toward"),
-            "<span class='W'>W</span>hat, <span class='W'>w</span>here, <span class='Ptk'>t</span>oward".to_string()
+            "<span class='W'>W</span>ha<span class='Ptk'>t</span>, <span class='W'>w</span>here, <span class='Ptk'>t</span>oward".to_string()
         );
     }
 
@@ -189,7 +200,7 @@ mod highlight {
     fn it_should_highlight_dj() {
         assert_eq!(
             highlight("John, just, enjoy"),
-            "<span class='Dj'>J</span>ohn, <span class='Dj'>j</span>ust, enjoy".to_string()
+            "<span class='Dj'>J</span>ohn, <span class='Dj'>j</span>us<span class='Ptk'>t</span>, enjoy".to_string()
         );
     }
 
@@ -198,6 +209,15 @@ mod highlight {
         assert_eq!(
             highlight("Put\u{a0}W"),
             "<span class='Ptk'>P</span>u<span class='Ptk'>t</span>\u{a0}<span class='W'>W</span>"
+                .to_string()
+        );
+    }
+
+    #[test]
+    fn it_should_highlight_with_punctuation_chars() {
+        assert_eq!(
+            highlight("what!the such-exp:the going?Jhon much; Going."),
+            "<span class='W'>w</span>ha<span class='Ptk'>t</span>!<span class='Th'>th</span>e su<span class='Ch'>ch</span>-ex<span class='Ptk'>p</span>:<span class='Th'>th</span>e goi<span class='Ng'>ng</span>?<span class='Dj'>J</span>hon mu<span class='Ch'>ch</span>; Goi<span class='Ng'>ng</span>."
                 .to_string()
         );
     }
