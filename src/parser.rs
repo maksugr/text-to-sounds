@@ -1,6 +1,5 @@
 use crate::scanner::Scanner;
 use crate::sound::{Sound, SoundKind};
-use crate::utils::any_letter;
 
 fn add_sound_from_two_letters(
     first_letter: &char,
@@ -63,7 +62,7 @@ pub fn parse<T: AsRef<str>>(text: T) -> Vec<Sound> {
         while !scanner.is_done() {
             match scanner.peek() {
                 letter @ ('c' | 'C')
-                    if !scanner.is_last() && any_letter(vec!['h', 'H'], &scanner) =>
+                    if !scanner.is_last() && scanner.is_next_any(vec!['h', 'H']) =>
                 {
                     let next_letter = scanner.peek_next();
 
@@ -77,7 +76,7 @@ pub fn parse<T: AsRef<str>>(text: T) -> Vec<Sound> {
                 {
                     if (letter == &'t' || letter == &'T')
                         && !scanner.is_last()
-                        && any_letter(vec!['h', 'H'], &scanner)
+                        && scanner.is_next_any(vec!['h', 'H'])
                     {
                         let next_letter = scanner.peek_next();
 
@@ -92,7 +91,7 @@ pub fn parse<T: AsRef<str>>(text: T) -> Vec<Sound> {
                     sounds.push(Sound::new(SoundKind::Ptk, letter.to_string()));
                     scanner.pop();
                 }
-                letter @ ('t' | 'T') if any_letter(vec!['h', 'H'], &scanner) => {
+                letter @ ('t' | 'T') if scanner.is_next_any(vec!['h', 'H']) => {
                     let next_letter = scanner.peek_next();
 
                     add_sound_from_two_letters(letter, next_letter, SoundKind::Th, &mut sounds);
@@ -109,7 +108,7 @@ pub fn parse<T: AsRef<str>>(text: T) -> Vec<Sound> {
                     scanner.pop();
                 }
                 letter @ ('n' | 'N')
-                    if !scanner.is_last() && any_letter(vec!['g', 'G', 'k', 'K'], &scanner) =>
+                    if !scanner.is_last() && scanner.is_next_any(vec!['g', 'G', 'k', 'K']) =>
                 {
                     let next_letter = scanner.peek_next();
 

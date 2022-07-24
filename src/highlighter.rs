@@ -1,31 +1,5 @@
 use crate::scanner::Scanner;
 use crate::sound::SoundKind;
-use crate::utils::any_letter;
-
-const NON_BREAKABLE_HTML_CHAR: char = '\u{a0}';
-const PUNCTUATION_CHARS: [char; 7] = ['.', ',', ';', '!', '?', ':', '-'];
-
-fn is_punctuation(c: &char) -> bool {
-    PUNCTUATION_CHARS.iter().any(|cc| cc == c)
-}
-
-fn is_first(scanner: &Scanner) -> bool {
-    let prev_char = scanner.peek_prev();
-
-    scanner.is_first()
-        || prev_char == &' '
-        || prev_char == &NON_BREAKABLE_HTML_CHAR
-        || is_punctuation(prev_char)
-}
-
-fn is_last(scanner: &Scanner) -> bool {
-    let next_char = scanner.peek_next();
-
-    scanner.is_last()
-        || next_char == &' '
-        || next_char == &NON_BREAKABLE_HTML_CHAR
-        || is_punctuation(next_char)
-}
 
 fn highlight_two_letters(
     first_letter: &char,
@@ -60,7 +34,7 @@ pub fn highlight<T: AsRef<str>>(text: T) -> String {
 
     while !scanner.is_done() {
         match scanner.peek() {
-            letter @ ('c' | 'C') if !is_last(&scanner) && any_letter(vec!['h', 'H'], &scanner) => {
+            letter @ ('c' | 'C') if !scanner.is_last() && scanner.is_next_any(vec!['h', 'H']) => {
                 let next_letter = scanner.peek_next();
 
                 highlight_two_letters(letter, next_letter, SoundKind::Ch, &mut result_text);
@@ -69,11 +43,11 @@ pub fn highlight<T: AsRef<str>>(text: T) -> String {
                 scanner.pop();
             }
             letter @ ('p' | 'P' | 't' | 'T' | 'c' | 'C')
-                if is_first(&scanner) || is_last(&scanner) =>
+                if scanner.is_first() || scanner.is_last() =>
             {
                 if (letter == &'t' || letter == &'T')
-                    && !is_last(&scanner)
-                    && any_letter(vec!['h', 'H'], &scanner)
+                    && !scanner.is_last()
+                    && scanner.is_next_any(vec!['h', 'H'])
                 {
                     let next_letter = scanner.peek_next();
 
@@ -93,7 +67,7 @@ pub fn highlight<T: AsRef<str>>(text: T) -> String {
 
                 scanner.pop();
             }
-            letter @ ('t' | 'T') if any_letter(vec!['h', 'H'], &scanner) => {
+            letter @ ('t' | 'T') if scanner.is_next_any(vec!['h', 'H']) => {
                 let next_letter = scanner.peek_next();
 
                 highlight_two_letters(letter, next_letter, SoundKind::Th, &mut result_text);
@@ -101,7 +75,7 @@ pub fn highlight<T: AsRef<str>>(text: T) -> String {
                 scanner.pop();
                 scanner.pop();
             }
-            letter @ ('w' | 'W') if is_first(&scanner) => {
+            letter @ ('w' | 'W') if scanner.is_first() => {
                 result_text.push_str(&format!(
                     "<span class='{:?}'>{}</span>",
                     SoundKind::W,
@@ -110,7 +84,7 @@ pub fn highlight<T: AsRef<str>>(text: T) -> String {
 
                 scanner.pop();
             }
-            letter @ ('v' | 'V') if is_first(&scanner) => {
+            letter @ ('v' | 'V') if scanner.is_first() => {
                 result_text.push_str(&format!(
                     "<span class='{:?}'>{}</span>",
                     SoundKind::V,
@@ -120,7 +94,7 @@ pub fn highlight<T: AsRef<str>>(text: T) -> String {
                 scanner.pop();
             }
             letter @ ('n' | 'N')
-                if !is_last(&scanner) && any_letter(vec!['g', 'G', 'k', 'K'], &scanner) =>
+                if !scanner.is_last() && scanner.is_next_any(vec!['g', 'G', 'k', 'K']) =>
             {
                 let next_letter = scanner.peek_next();
 
@@ -129,7 +103,7 @@ pub fn highlight<T: AsRef<str>>(text: T) -> String {
                 scanner.pop();
                 scanner.pop();
             }
-            letter @ ('j' | 'J') if is_first(&scanner) => {
+            letter @ ('j' | 'J') if scanner.is_first() => {
                 result_text.push_str(&format!(
                     "<span class='{:?}'>{}</span>",
                     SoundKind::Dj,
@@ -205,7 +179,7 @@ mod highlight {
     }
 
     #[test]
-    fn it_should_highlight_with_non_breakable_chars() {
+    fn it_should_highlight_with_non_breakable_char() {
         assert_eq!(
             highlight("Put\u{a0}W"),
             "<span class='Ptk'>P</span>u<span class='Ptk'>t</span>\u{a0}<span class='W'>W</span>"
@@ -214,7 +188,7 @@ mod highlight {
     }
 
     #[test]
-    fn it_should_highlight_with_punctuation_chars() {
+    fn it_should_highlight_with_punctuation_char() {
         assert_eq!(
             highlight("what!the such-exp:the going?Jhon much; Going."),
             "<span class='W'>w</span>ha<span class='Ptk'>t</span>!<span class='Th'>th</span>e su<span class='Ch'>ch</span>-ex<span class='Ptk'>p</span>:<span class='Th'>th</span>e goi<span class='Ng'>ng</span>?<span class='Dj'>J</span>hon mu<span class='Ch'>ch</span>; Goi<span class='Ng'>ng</span>."

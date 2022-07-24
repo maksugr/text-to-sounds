@@ -6,9 +6,18 @@ pub struct Scanner {
     characters: Vec<char>,
 }
 
-/// Default letter if Scanner will found nothing
+/// Space html character
+const SPACE_HTML_CHAR: &char = &' ';
+
+/// Non-breakable space html character
+const NON_BREAKABLE_SPACE_HTML_CHAR: &char = &'\u{a0}';
+
+/// Default char if Scanner will found nothing
 /// Just an easy workaround for Option
-const DEFAULT_LETTER: &char = &' ';
+const DEFAULT_CHAR: &char = SPACE_HTML_CHAR;
+
+/// Array of the punctuation characters
+const PUNCTUATION_CHARS: [char; 7] = ['.', ',', ';', '!', '?', ':', '-'];
 
 impl Scanner {
     /// Creates new Scanner
@@ -20,32 +29,26 @@ impl Scanner {
     }
 
     /// Returns the current cursor. Useful for reporting errors.
-    #[allow(dead_code)]
     pub fn cursor(&self) -> usize {
         self.cursor
     }
 
     /// Returns the next character without advancing the cursor.
     pub fn peek(&self) -> &char {
-        self.characters.get(self.cursor).unwrap_or(DEFAULT_LETTER)
+        self.characters.get(self.cursor).unwrap_or(DEFAULT_CHAR)
     }
 
     /// Returns the next + 1 character without advancing the cursor.
     pub fn peek_next(&self) -> &char {
-        self.characters
-            .get(self.cursor + 1)
-            .unwrap_or(DEFAULT_LETTER)
+        self.characters.get(self.cursor + 1).unwrap_or(DEFAULT_CHAR)
     }
 
     /// Returns the prev character without advancing the cursor.
     pub fn peek_prev(&self) -> &char {
-        if self.is_first() {
-            return DEFAULT_LETTER;
+        match self.cursor() == 0 {
+            true => DEFAULT_CHAR,
+            false => self.characters.get(self.cursor - 1).unwrap_or(DEFAULT_CHAR),
         }
-
-        self.characters
-            .get(self.cursor - 1)
-            .unwrap_or(DEFAULT_LETTER)
     }
 
     /// Returns true if further progress is not possible.
@@ -55,12 +58,35 @@ impl Scanner {
 
     /// Returns true if the first char.
     pub fn is_first(&self) -> bool {
-        self.cursor == 0
+        match self.cursor == 0 {
+            true => true,
+            false => {
+                let prev_char = self.peek_prev();
+
+                prev_char == SPACE_HTML_CHAR
+                    || prev_char == NON_BREAKABLE_SPACE_HTML_CHAR
+                    || Self::is_punctuation(prev_char)
+            }
+        }
     }
 
     /// Returns true if the last char.
     pub fn is_last(&self) -> bool {
-        self.cursor + 1 == self.characters.len()
+        match self.cursor + 1 == self.characters.len() {
+            true => true,
+            false => {
+                let next_char = self.peek_next();
+
+                next_char == SPACE_HTML_CHAR
+                    || next_char == NON_BREAKABLE_SPACE_HTML_CHAR
+                    || Self::is_punctuation(next_char)
+            }
+        }
+    }
+
+    // Returns true if next char exists in `chars` param
+    pub fn is_next_any(&self, chars: Vec<char>) -> bool {
+        chars.iter().any(|c| self.peek_next() == c)
     }
 
     /// Returns the next character and advances the cursor.
@@ -71,8 +97,13 @@ impl Scanner {
 
                 character
             }
-            None => DEFAULT_LETTER,
+            None => DEFAULT_CHAR,
         }
+    }
+
+    /// Returns true if the character is a punctuation character
+    fn is_punctuation(c: &char) -> bool {
+        PUNCTUATION_CHARS.iter().any(|cc| cc == c)
     }
 }
 
@@ -148,7 +179,7 @@ mod peek {
     fn empty() {
         let scanner = Scanner::new("");
 
-        assert_eq!(scanner.peek(), DEFAULT_LETTER)
+        assert_eq!(scanner.peek(), DEFAULT_CHAR)
     }
 
     #[test]
@@ -169,7 +200,7 @@ mod peek_next {
     fn empty() {
         let scanner = Scanner::new("");
 
-        assert_eq!(scanner.peek_next(), DEFAULT_LETTER)
+        assert_eq!(scanner.peek_next(), DEFAULT_CHAR)
     }
 
     #[test]
@@ -190,7 +221,7 @@ mod peek_prev {
     fn empty() {
         let scanner = Scanner::new("");
 
-        assert_eq!(scanner.peek_prev(), DEFAULT_LETTER)
+        assert_eq!(scanner.peek_prev(), DEFAULT_CHAR)
     }
 
     #[test]
@@ -215,6 +246,24 @@ mod is_first {
     }
 
     #[test]
+    fn is_first_with_punctuation_char() {
+        let mut scanner = Scanner::new("!abc");
+
+        scanner.pop();
+
+        assert!(scanner.is_first())
+    }
+
+    #[test]
+    fn is_first_with_non_breakable_char() {
+        let mut scanner = Scanner::new("\u{a0}abc");
+
+        scanner.pop();
+
+        assert!(scanner.is_first())
+    }
+
+    #[test]
     fn not_is_first() {
         let mut scanner = Scanner::new("abc");
 
@@ -229,13 +278,6 @@ mod is_last {
     use super::*;
 
     #[test]
-    fn not_is_last() {
-        let scanner = Scanner::new("abc");
-
-        assert!(!scanner.is_last())
-    }
-
-    #[test]
     fn is_last() {
         let mut scanner = Scanner::new("abc");
 
@@ -243,6 +285,52 @@ mod is_last {
         scanner.pop();
 
         assert!(scanner.is_last())
+    }
+
+    #[test]
+    fn is_last_with_punctuation_char() {
+        let mut scanner = Scanner::new("abc!");
+
+        scanner.pop();
+        scanner.pop();
+
+        assert!(scanner.is_last())
+    }
+
+    #[test]
+    fn is_last_with_non_breakable_char() {
+        let mut scanner = Scanner::new("abc\u{a0}");
+
+        scanner.pop();
+        scanner.pop();
+
+        assert!(scanner.is_last())
+    }
+
+    #[test]
+    fn not_is_last() {
+        let scanner = Scanner::new("abc");
+
+        assert!(!scanner.is_last())
+    }
+}
+
+#[cfg(test)]
+mod is_next_any {
+    use super::*;
+
+    #[test]
+    fn it_should_be_true() {
+        let scanner = Scanner::new("cheese");
+
+        assert!(scanner.is_next_any(vec!['h']));
+    }
+
+    #[test]
+    fn it_should_be_false() {
+        let scanner = Scanner::new("cheese");
+
+        assert!(!scanner.is_next_any(vec!['c']));
     }
 }
 
@@ -254,7 +342,7 @@ mod pop {
     fn empty() {
         let mut scanner = Scanner::new("");
 
-        assert_eq!(scanner.pop(), DEFAULT_LETTER);
+        assert_eq!(scanner.pop(), DEFAULT_CHAR);
         assert_eq!(scanner.cursor(), 0)
     }
 
@@ -274,7 +362,22 @@ mod pop {
         scanner.pop();
         scanner.pop();
 
-        assert_eq!(scanner.pop(), DEFAULT_LETTER);
+        assert_eq!(scanner.pop(), DEFAULT_CHAR);
         assert_eq!(scanner.cursor(), 3)
+    }
+}
+
+#[cfg(test)]
+mod is_punctuation {
+    use super::*;
+
+    #[test]
+    fn is_punctuation() {
+        assert!(Scanner::is_punctuation(&'!'));
+    }
+
+    #[test]
+    fn is_not_punctuation() {
+        assert!(!Scanner::is_punctuation(&'k'));
     }
 }
