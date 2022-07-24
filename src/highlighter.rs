@@ -2,12 +2,18 @@ use crate::scanner::Scanner;
 use crate::sound::SoundKind;
 use crate::utils::any_letter;
 
+const NON_BREAKABLE_HTML_CHAR: char = '\u{a0}';
+
 fn is_first(scanner: &Scanner) -> bool {
-    scanner.is_first() || scanner.peek_prev() == &' '
+    scanner.is_first()
+        || scanner.peek_prev() == &' '
+        || scanner.peek_prev() == &NON_BREAKABLE_HTML_CHAR
 }
 
 fn is_last(scanner: &Scanner) -> bool {
-    scanner.is_last() || scanner.peek_next() == &' '
+    scanner.is_last()
+        || scanner.peek_next() == &' '
+        || scanner.peek_next() == &NON_BREAKABLE_HTML_CHAR
 }
 
 fn highlight_two_letters(
@@ -184,6 +190,15 @@ mod highlight {
         assert_eq!(
             highlight("John, just, enjoy"),
             "<span class='Dj'>J</span>ohn, <span class='Dj'>j</span>ust, enjoy".to_string()
+        );
+    }
+
+    #[test]
+    fn it_should_highlight_with_non_breakable_chars() {
+        assert_eq!(
+            highlight("Put\u{a0}W"),
+            "<span class='Ptk'>P</span>u<span class='Ptk'>t</span>\u{a0}<span class='W'>W</span>"
+                .to_string()
         );
     }
 }
