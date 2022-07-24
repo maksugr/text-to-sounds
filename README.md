@@ -59,7 +59,7 @@ In order to use this crate, you have to add it under `[dependencies]` to your `C
 
 ```toml
 [dependencies]
-text-to-sounds = "1.0.2"
+text-to-sounds = "1.1.0"
 ```
 
 ## Javascript / WASM

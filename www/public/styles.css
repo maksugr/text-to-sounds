@@ -32,7 +32,7 @@ h1:before {
     font-weight: 300;
     width: 100%;
     color: var(--main-color);
-    line-height: 1.7;
+    line-height: 1.2;
     margin: 30px 0;
     outline: none;
     caret-color: var(--accent-color);
